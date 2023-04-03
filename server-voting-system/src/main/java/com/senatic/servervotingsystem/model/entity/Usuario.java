@@ -37,7 +37,7 @@ public class Usuario {
     @Column(length = 10)
     private String username;
 
-    @Column(length = 10)
+    @Column(length = 250)
     private String password;
 
     @Enumerated(EnumType.STRING)
