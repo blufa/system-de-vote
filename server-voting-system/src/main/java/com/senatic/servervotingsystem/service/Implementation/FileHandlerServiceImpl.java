@@ -9,7 +9,7 @@ import java.util.Base64;
 import java.util.List;
 
 import org.springframework.mock.web.MockMultipartFile;
-
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.senatic.servervotingsystem.model.dto.AprendizDTO;
@@ -17,6 +17,7 @@ import com.senatic.servervotingsystem.service.FileHandlerService;
 
 import jakarta.xml.bind.DatatypeConverter;
 
+@Service
 public class FileHandlerServiceImpl implements FileHandlerService {
 
     @Override
