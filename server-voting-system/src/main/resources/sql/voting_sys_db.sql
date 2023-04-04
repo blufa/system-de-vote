@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 03-04-2023 a las 18:59:24
+-- Tiempo de generación: 04-04-2023 a las 18:49:35
 -- Versión del servidor: 8.0.32-0ubuntu0.22.04.2
 -- Versión de PHP: 8.1.2-1ubuntu2.11
 
@@ -75,6 +75,21 @@ CREATE TABLE `imagenes` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `Token`
+--
+
+CREATE TABLE `Token` (
+  `id` int NOT NULL,
+  `expired` bit(1) NOT NULL,
+  `revoked` bit(1) NOT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `tokenType` varchar(255) DEFAULT NULL,
+  `idUsuario` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuarios`
 --
 
@@ -90,13 +105,6 @@ CREATE TABLE `usuarios` (
   `password` varchar(250) DEFAULT NULL,
   `username` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Volcado de datos para la tabla `usuarios`
---
-
-INSERT INTO `usuarios` (`id`, `accountNonExpired`, `accountNonLocked`, `authority`, `creationDateTime`, `credentialsNonExpired`, `enabled`, `lastModified`, `password`, `username`) VALUES
-(1, b'1', b'1', 'ADMINISTRADOR', '2023-04-03 17:57:21.294552', b'1', b'1', '2023-04-03 17:57:21.294870', '$2a$10$zfj.ePWuRndqoK1RGwuOWO0cAsTDYo3BTqH9FzngOsz0n8y4XY846', 'S3n4AcMin0');
 
 -- --------------------------------------------------------
 
@@ -157,6 +165,14 @@ ALTER TABLE `imagenes`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `Token`
+--
+ALTER TABLE `Token`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UK_3wi2t4g8oiplxjflw3o2lkv2y` (`token`),
+  ADD KEY `FK56xvftgniyisi7gth8mmeeq7i` (`idUsuario`);
+
+--
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -189,10 +205,16 @@ ALTER TABLE `candidatos`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `Token`
+--
+ALTER TABLE `Token`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `votaciones`
@@ -223,6 +245,12 @@ ALTER TABLE `candidatos`
   ADD CONSTRAINT `FK8tfgrgsxj7fca13fwnwn5fjak` FOREIGN KEY (`idAprendiz`) REFERENCES `aprendices` (`id`),
   ADD CONSTRAINT `FKfnxrvbv3yjlx7crddgvypsh89` FOREIGN KEY (`idImagen`) REFERENCES `imagenes` (`id`),
   ADD CONSTRAINT `FKh1rqb7msjhxrs1rbtlr4oa46i` FOREIGN KEY (`idVotacion`) REFERENCES `votaciones` (`id`);
+
+--
+-- Filtros para la tabla `Token`
+--
+ALTER TABLE `Token`
+  ADD CONSTRAINT `FK56xvftgniyisi7gth8mmeeq7i` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`);
 
 --
 -- Filtros para la tabla `votos`
