@@ -19,7 +19,7 @@ public class bootstrapLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        //loadSampleUsers();
+        loadSampleUsers();
     }
 
     void loadSampleUsers(){
