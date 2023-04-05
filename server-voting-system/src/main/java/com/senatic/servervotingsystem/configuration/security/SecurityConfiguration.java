@@ -37,8 +37,8 @@ public class SecurityConfiguration {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration corsConfiguration = new CorsConfiguration();
-                        corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
-                        corsConfiguration.setAllowedMethods(List.of("*"));
+                        corsConfiguration.setAllowedOrigins(List.of("*:4200"));
+                        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PATCH", "OPTIONS", "DELETE", "PUT"));
                         corsConfiguration.setAllowedHeaders(List.of(SecurityConstants.JWT_HEADER));
                         corsConfiguration.setAllowCredentials(true);
                         corsConfiguration.setMaxAge(3600L);
