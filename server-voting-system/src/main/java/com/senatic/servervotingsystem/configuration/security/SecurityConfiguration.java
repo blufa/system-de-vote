@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import com.senatic.servervotingsystem.configuration.security.constant.SecurityConstants;
 import com.senatic.servervotingsystem.configuration.security.filter.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    //private final CsrfCookieFilter csrfCookieFilter;
     private final LogoutHandler logoutHandler;
 
     @Bean
@@ -32,19 +32,19 @@ public class SecurityConfiguration {
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                .cors().configurationSource(new CorsConfigurationSource() {
+                // .cors().configurationSource(new CorsConfigurationSource() {
 
-                    @Override
-                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                        CorsConfiguration corsConfiguration = new CorsConfiguration();
-                        corsConfiguration.setAllowedOrigins(List.of("*"));
-                        corsConfiguration.setAllowedMethods(List.of("*"));
-                        corsConfiguration.setAllowedHeaders(List.of("*"));
-                        corsConfiguration.setAllowCredentials(true);
-                        corsConfiguration.setMaxAge(3600L);
-                        return corsConfiguration;
-                    }
-                }).and()
+                //     @Override
+                //     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                //         CorsConfiguration corsConfiguration = new CorsConfiguration();
+                //         corsConfiguration.setAllowedOrigins(List.of("*"));
+                //         corsConfiguration.setAllowedMethods(List.of("*"));
+                //         corsConfiguration.setAllowedHeaders(List.of(SecurityConstants.JWT_HEADER));
+                //         corsConfiguration.setAllowCredentials(true);
+                //         corsConfiguration.setMaxAge(3600L);
+                //         return corsConfiguration;
+                //     }})
+                .cors().disable()
                 .csrf().disable()
                 .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
                 .authorizeHttpRequests()
