@@ -36,7 +36,7 @@ public class AprendizMapper implements GenericMapper<Aprendiz, AprendizDTO> {
                 .correoElectronico(dto.getCorreoElectronico())
                 .ficha(dto.getFicha())
                 .programa(dto.getPrograma())
-                .estado(EstadoAprendiz.valueOf(dto.getEstado()))
+                .estado(EstadoAprendiz.checkAndAssign(dto.getEstado()))
                 .build();
         return aprendiz;
     }
