@@ -38,7 +38,6 @@ public class AprendizMapper implements GenericMapper<Aprendiz, AprendizDTO> {
                 .programa(dto.getPrograma())
                 .estado(EstadoAprendiz.checkAndAssign(dto.getEstado()))
                 .build();
-        System.out.println(aprendiz.toString());
         return aprendiz;
     }
 
