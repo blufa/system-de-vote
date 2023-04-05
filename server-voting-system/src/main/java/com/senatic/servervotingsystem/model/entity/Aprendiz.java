@@ -34,13 +34,13 @@ public class Aprendiz {
     @Column(length = 10)
     private String id;
 
-    @Column(length = 45)
+    @Column(length = 100)
     private String nombre;
 
-    @Column(length = 45)
+    @Column(length = 100)
     private String apellido;
 
-    @Column(length = 2)
+    @Column(length = 10)
     @Enumerated(EnumType.STRING)
     private TipoDocumento tipoDocumento;
 
@@ -48,13 +48,13 @@ public class Aprendiz {
     @JoinColumn(name="idUsuario")
     private Usuario usuario;
 
-    @Column(length = 10)
+    @Column(length = 15)
     private String celular;
 
-    @Column(length = 75)
+    @Column(length = 250)
     private String correoElectronico;
 
-    @Column(length = 7)
+    @Column(length = 20)
     private String ficha;
 
     @Column(length = 250)

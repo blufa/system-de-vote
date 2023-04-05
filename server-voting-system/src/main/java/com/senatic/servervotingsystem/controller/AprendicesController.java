@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.senatic.servervotingsystem.controller.exceptionHandler.exception.EntityAlreadyExistException;
+import com.senatic.servervotingsystem.controller.exceptionHandler.exception.EntityNotFoundException;
+import com.senatic.servervotingsystem.controller.exceptionHandler.exception.FileNotValidException;
 import com.senatic.servervotingsystem.model.dto.AprendizDTO;
 import com.senatic.servervotingsystem.model.entity.Aprendiz;
 import com.senatic.servervotingsystem.model.mapper.AprendizMapper;
@@ -69,9 +72,10 @@ public class AprendicesController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> handleCreateAprendiz(@RequestBody AprendizDTO aprendizDTO) {
+    public ResponseEntity<HttpStatus> handleCreateAprendiz(@RequestBody AprendizDTO aprendizDTO)
+            throws EntityAlreadyExistException {
         if (aprendicesService.alreadyExist(aprendizDTO)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new EntityAlreadyExistException("APRENDIZ already exist");
         }
         Aprendiz aprendiz = aprendizMapper.dtoToPojo(aprendizDTO);
         aprendicesService.addAprendiz(aprendiz);
@@ -79,7 +83,8 @@ public class AprendicesController {
     }
 
     @PostMapping("/csv")
-    public ResponseEntity<HttpStatus> handleSaveAprendicesByCSV(@RequestBody MultipartFile csvFile) {
+    public ResponseEntity<HttpStatus> handleSaveAprendicesByCSV(@RequestBody MultipartFile csvFile)
+            throws FileNotValidException {
         if (!csvFile.isEmpty()) {
             if (fileHandlerService.isFormatValid(csvFile.getOriginalFilename(), ".csv")) {
                 List<AprendizDTO> aprendicesDTO = fileHandlerService.readCsvToAprendizDTO(csvFile);
@@ -87,16 +92,18 @@ public class AprendicesController {
                 aprendicesService.addAprendices(aprendices);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
+            throw new FileNotValidException("File must be in valid format");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        throw new FileNotValidException("File must not be empty. Can not be readed");
     }
 
     @PutMapping
-    public ResponseEntity<HttpStatus> handleEditAprendiz(@RequestBody AprendizDTO aprendizDTO) {
+    public ResponseEntity<HttpStatus> handleEditAprendiz(@RequestBody AprendizDTO aprendizDTO)
+            throws EntityNotFoundException {
         if (!aprendicesService.alreadyExist(aprendizDTO)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new EntityNotFoundException("APRENDIZ not found with id: " + aprendizDTO.getNumeroDocumento());
         }
-        aprendicesService.updateAprendiz(aprendizDTO);        
+        aprendicesService.updateAprendiz(aprendizDTO);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

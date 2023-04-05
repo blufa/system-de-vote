@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.senatic.servervotingsystem.controller.exceptionHandler.exception.EntityAlreadyOnStateException;
+import com.senatic.servervotingsystem.controller.exceptionHandler.exception.EntityNotFoundException;
 import com.senatic.servervotingsystem.model.dto.CandidatoDTO;
 import com.senatic.servervotingsystem.model.entity.Candidato;
 import com.senatic.servervotingsystem.model.entity.Votacion;
@@ -92,10 +94,10 @@ public class CandidatosController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> handleCreateCandidato(@RequestBody CandidatoDTO candidatoDTO) {
+    public ResponseEntity<HttpStatus> handleCreateCandidato(@RequestBody CandidatoDTO candidatoDTO) throws EntityAlreadyOnStateException {
         Candidato candidato = candidatoMapper.dtoToPojo(candidatoDTO);
         if (candidatosService.alreadyExistOnVotacion(candidato)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new EntityAlreadyOnStateException("CANDIDATO already exist on VOTACION. Can not be added");
         }
         candidatosService.addCandidato(candidato);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -103,9 +105,9 @@ public class CandidatosController {
 
     @PutMapping
     public ResponseEntity<HttpStatus> handleUpdateCandidato(
-            @RequestBody CandidatoDTO candidatoDTO) {
+            @RequestBody CandidatoDTO candidatoDTO) throws EntityNotFoundException {
         if (!candidatosService.alreadyExist(candidatoDTO)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new EntityNotFoundException("CANDIDATO not found. Can not be updated");
         }
         Candidato candidato = candidatoMapper.dtoToPojo(candidatoDTO);
         candidatosService.addCandidato(candidato);
@@ -113,22 +115,22 @@ public class CandidatosController {
     }
 
     @PatchMapping("/enable/{id}")
-    public ResponseEntity<HttpStatus> enableCandidatoById(@PathVariable("id") Integer idCandidato) {
+    public ResponseEntity<HttpStatus> enableCandidatoById(@PathVariable("id") Integer idCandidato) throws EntityNotFoundException, EntityAlreadyOnStateException {
         if (!candidatosService.alreadyExist(idCandidato)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new EntityNotFoundException("CANDIDATO not found. Can not be enabled");
         } else if(candidatosService.alreadyEnabled(idCandidato)){
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new EntityAlreadyOnStateException("CANDIDATO already enabled. Do not request enable");
         } 
         candidatosService.enableCandidatoById(idCandidato);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PatchMapping("/disable/{id}")
-    public ResponseEntity<HttpStatus> disableCandidatoById(@PathVariable("id") Integer idCandidato) {
+    public ResponseEntity<HttpStatus> disableCandidatoById(@PathVariable("id") Integer idCandidato) throws EntityNotFoundException, EntityAlreadyOnStateException {
         if (!candidatosService.alreadyExist(idCandidato)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new EntityNotFoundException("CANDIDATO not found. Can not be disabled");
         } else if(candidatosService.alreadyDisabled(idCandidato)){
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new EntityAlreadyOnStateException("CANDIDATO already disabled. Do not request disable");
         } 
         candidatosService.disableCandidatoById(idCandidato);
         return ResponseEntity.status(HttpStatus.OK).build();

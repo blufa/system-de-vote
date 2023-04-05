@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.senatic.servervotingsystem.service.EstadisticasService;
 import com.senatic.servervotingsystem.service.VotacionesService;
+import com.senatic.servervotingsystem.controller.exceptionHandler.exception.EntityAlreadyOnStateException;
+import com.senatic.servervotingsystem.controller.exceptionHandler.exception.EntityNotFoundException;
 import com.senatic.servervotingsystem.model.dto.VotacionDTO;
 import com.senatic.servervotingsystem.model.entity.Estadisticas;
 import com.senatic.servervotingsystem.model.entity.Votacion;
@@ -56,8 +58,6 @@ public class VotacionesController {
         return ResponseEntity.status(HttpStatus.OK).body(votacionesDTO);
     }
 
-    
-
     @GetMapping("/search")
     public ResponseEntity<Page<VotacionDTO>> handleSearchVotacion(
             @RequestBody VotacionDTO exampleDTO,
@@ -76,9 +76,10 @@ public class VotacionesController {
     }
 
     @PutMapping
-    public ResponseEntity<HttpStatus> handleUpdateVotacion(@RequestBody VotacionDTO votacionDTO) {
+    public ResponseEntity<HttpStatus> handleUpdateVotacion(@RequestBody VotacionDTO votacionDTO)
+            throws EntityNotFoundException {
         if (!votacionesService.alreadyExist(votacionDTO)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new EntityNotFoundException("VOTACION not found. Can not be updated");
         }
         Votacion votacion = votacionMapper.dtoToPojo(votacionDTO);
         votacionesService.addVotacion(votacion);
@@ -86,18 +87,20 @@ public class VotacionesController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> handleCreateVotacion(@PathVariable("id") Integer idVotacion) {
+    public ResponseEntity<HttpStatus> handleCreateVotacion(@PathVariable("id") Integer idVotacion)
+            throws EntityNotFoundException {
         if (!votacionesService.alreadyExist(idVotacion)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new EntityNotFoundException("VOTACION not found. Can not be deleted");
         }
         votacionesService.deleteById(idVotacion);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> handleSaveVotacion(@RequestBody VotacionDTO votacionDTO) {
+    public ResponseEntity<HttpStatus> handleSaveVotacion(@RequestBody VotacionDTO votacionDTO)
+            throws EntityAlreadyOnStateException {
         if (votacionesService.alreadyExist(votacionDTO)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new EntityAlreadyOnStateException("VOTACION already exist. Can not be added");
         }
         Votacion votacion = votacionMapper.dtoToPojo(votacionDTO);
         votacionesService.addVotacion(votacion);
@@ -105,33 +108,36 @@ public class VotacionesController {
     }
 
     @PatchMapping("/disable/{id}")
-    public ResponseEntity<HttpStatus> handleDisableVotacion(@PathVariable("id") Integer idVotacion) {
+    public ResponseEntity<HttpStatus> handleDisableVotacion(@PathVariable("id") Integer idVotacion)
+            throws EntityNotFoundException, EntityAlreadyOnStateException {
         if (!votacionesService.alreadyExist(idVotacion)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } else if (votacionesService.isEnabled(idVotacion)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new EntityNotFoundException("VOTACION not found. Can not be disabled");
+        } else if (votacionesService.isDisabled(idVotacion)) {
+            throw new EntityAlreadyOnStateException("VOTACION already disabled. Do not request disable");
         }
         votacionesService.disableVotacionById(idVotacion);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PatchMapping("/enable/{id}")
-    public ResponseEntity<HttpStatus> handleEnableVotacion(@PathVariable("id") Integer idVotacion) {
+    public ResponseEntity<HttpStatus> handleEnableVotacion(@PathVariable("id") Integer idVotacion)
+            throws EntityNotFoundException, EntityAlreadyOnStateException {
         if (!votacionesService.alreadyExist(idVotacion)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new EntityNotFoundException("VOTACION not found. Can not be enabled");
         } else if (votacionesService.isEnabled(idVotacion)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new EntityAlreadyOnStateException("VOTACION already enabled. Do not request enable");
         }
         votacionesService.enableVotacionById(idVotacion);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/estadisticas/{id}")
-    public ResponseEntity<Estadisticas> handleGetEstadisticas(@PathVariable("id") Integer idVotacion) {
+    public ResponseEntity<Estadisticas> handleGetEstadisticas(@PathVariable("id") Integer idVotacion)
+            throws EntityNotFoundException, IllegalStateException {
         if (!votacionesService.alreadyExist(idVotacion)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } else if (!votacionesService.isDisabled(idVotacion)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            throw new EntityNotFoundException("VOTACION not found. ESTADISTICAS can not be provided");
+        } else if (votacionesService.isEnabled(idVotacion)) {
+            throw new IllegalStateException("VOTACION is not disabled. ESTADISTICAS can not be provided");
         }
         Votacion votacion = votacionesService.getVotacionById(idVotacion).get();
         Estadisticas estadisticas = estadisticasService.getEstadisticas(votacion);
@@ -141,7 +147,6 @@ public class VotacionesController {
     @InitBinder
     public void stringBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-
     }
 
 }
