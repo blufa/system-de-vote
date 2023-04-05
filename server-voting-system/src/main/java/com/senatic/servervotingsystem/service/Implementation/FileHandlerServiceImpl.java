@@ -45,17 +45,16 @@ public class FileHandlerServiceImpl implements FileHandlerService {
                 // Manipulate the line
                 String[] fields = line.split(",");
                 if (fields.length == 9) {
-                    String ficha = fields[0].trim().isEmpty() ? "NOT_PROVIDED" : fields[0];
-                    String programa = fields[1].trim().isEmpty() ? "NOT_PROVIDED" : fields[1];
-                    String tipoDocumento = fields[2].trim().isEmpty() ? "NA" : fields[2];
-                    String numeroDocumento = fields[3].trim().isEmpty() ? "NA" : fields[3];
-                    String nombre = fields[4].trim().isEmpty() ? "NOT_PROVIDED" : fields[4];
-                    String apellido = fields[5].trim().isEmpty() ? "NOT_PROVIDED" : fields[5];
-                    String celular = fields[6].trim().isEmpty() ? "NA" : fields[6];
-                    String correoElectronico = fields[7].trim().isEmpty() ? "NOT_PROVIDED" : fields[7];
-                    String estado = fields[8].trim().isEmpty() ? "NOT_PROVIDED" : fields[8];
+                    String ficha = fields[0].trim().isEmpty() ? "NOT_PROVIDED" : fields[0].trim();
+                    String programa = fields[1].trim().isEmpty() ? "NOT_PROVIDED" : fields[1].trim();
+                    String tipoDocumento = fields[2].trim().isEmpty() ? "NA" : fields[2].trim();
+                    String numeroDocumento = fields[3].trim().isEmpty() ? "NA" : fields[3].trim();
+                    String nombre = fields[4].trim().isEmpty() ? "NOT_PROVIDED" : fields[4].trim();
+                    String apellido = fields[5].trim().isEmpty() ? "NOT_PROVIDED" : fields[5].trim();
+                    String celular = fields[6].trim().isEmpty() ? "NA" : fields[6].trim();
+                    String correoElectronico = fields[7].trim().isEmpty() ? "NOT_PROVIDED" : fields[7].trim();
+                    String estado = fields[8].trim().isEmpty() ? "NOT_PROVIDED" : fields[8].trim();
                     
-    
                     AprendizDTO dto = AprendizDTO.builder()
                             .ficha(ficha)
                             .programa(programa)
@@ -69,13 +68,10 @@ public class FileHandlerServiceImpl implements FileHandlerService {
                             .build();
                     System.out.println(dto.toString());
                     aprendicesDTO.add(dto);
-
                 } else {
                     throw new FileNotValidException("CSV column length is not valid. Required: 9. Having: " + fields.length);
                 }
-
             }
-
         } catch (IOException e) {
             ApiExceptionHandler.logger.error(e.getMessage());
         }
