@@ -30,7 +30,7 @@ public class AprendizMapper implements GenericMapper<Aprendiz, AprendizDTO> {
                 .id(dto.getNumeroDocumento())
                 .nombre(dto.getNombre())
                 .apellido(dto.getApellido())
-                .tipoDocumento(TipoDocumento.valueOf(dto.getTipoDocumento()))
+                .tipoDocumento(TipoDocumento.checkAndAssign(dto.getTipoDocumento()))
                 .usuario(usuario)
                 .celular(dto.getCelular())
                 .correoElectronico(dto.getCorreoElectronico())
