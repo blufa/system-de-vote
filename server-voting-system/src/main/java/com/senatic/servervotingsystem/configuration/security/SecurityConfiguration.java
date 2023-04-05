@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import com.senatic.servervotingsystem.configuration.security.constant.SecurityConstants;
 import com.senatic.servervotingsystem.configuration.security.filter.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +39,7 @@ public class SecurityConfiguration {
                         CorsConfiguration corsConfiguration = new CorsConfiguration();
                         corsConfiguration.setAllowedOrigins(List.of("*"));
                         corsConfiguration.setAllowedMethods(List.of("*"));
-                        corsConfiguration.setAllowedHeaders(List.of(SecurityConstants.JWT_HEADER));
+                        corsConfiguration.setAllowedHeaders(List.of("*"));
                         corsConfiguration.setAllowCredentials(true);
                         corsConfiguration.setMaxAge(3600L);
                         return corsConfiguration;
@@ -52,7 +51,7 @@ public class SecurityConfiguration {
                 .requestMatchers("api/v1/candidatos/current-votacion", "api/v1/votos/vote-by**").hasRole("APRENDIZ")
                 .requestMatchers("api/v1/aprendices/**", "api/v1/candidatos/**", "api/v1/votaciones/**")
                 .hasRole("ADMINISTRADOR")
-                .requestMatchers("api/v1/auth**").permitAll()
+                .requestMatchers("api/v1/auth**", "/doc/swagger**").permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/api/v1/auth/logout")
