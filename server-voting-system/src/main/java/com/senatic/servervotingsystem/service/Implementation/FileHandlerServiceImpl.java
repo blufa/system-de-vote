@@ -67,10 +67,11 @@ public class FileHandlerServiceImpl implements FileHandlerService {
                             .correoElectronico(correoElectronico)
                             .estado(estado)
                             .build();
+                    System.out.println(dto.toString());
                     aprendicesDTO.add(dto);
 
                 } else {
-                    throw new FileNotValidException("CSV column length is not valid. Required: 8. Having: " + fields.length);
+                    throw new FileNotValidException("CSV column length is not valid. Required: 9. Having: " + fields.length);
                 }
 
             }
