@@ -47,13 +47,13 @@ public class FileHandlerServiceImpl implements FileHandlerService {
                 if (fields.length == 9) {
                     String ficha = fields[0].trim().isEmpty() ? "NOT_PROVIDED" : fields[0].trim();
                     String programa = fields[1].trim().isEmpty() ? "NOT_PROVIDED" : fields[1].trim();
-                    String tipoDocumento = fields[2].trim().isEmpty() ? "NA" : fields[2].trim();
+                    String tipoDocumento = fields[2].trim().isEmpty() ? "NA" : fields[2].trim().toUpperCase();
                     String numeroDocumento = fields[3].trim().isEmpty() ? "NA" : fields[3].trim();
                     String nombre = fields[4].trim().isEmpty() ? "NOT_PROVIDED" : fields[4].trim();
                     String apellido = fields[5].trim().isEmpty() ? "NOT_PROVIDED" : fields[5].trim();
                     String celular = fields[6].trim().isEmpty() ? "NA" : fields[6].trim();
                     String correoElectronico = fields[7].trim().isEmpty() ? "NOT_PROVIDED" : fields[7].trim();
-                    String estado = fields[8].trim().isEmpty() ? "NOT_PROVIDED" : fields[8].trim();
+                    String estado = fields[8].trim().isEmpty() ? "NOT_PROVIDED" : fields[8].trim().toUpperCase();
                     
                     AprendizDTO dto = AprendizDTO.builder()
                             .ficha(ficha)
