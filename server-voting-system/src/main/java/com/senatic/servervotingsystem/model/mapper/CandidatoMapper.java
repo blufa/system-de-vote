@@ -10,7 +10,6 @@ import com.senatic.servervotingsystem.model.entity.Imagen;
 import com.senatic.servervotingsystem.model.entity.Votacion;
 import com.senatic.servervotingsystem.model.entity.enums.EstadoCandidato;
 import com.senatic.servervotingsystem.service.AprendicesService;
-import com.senatic.servervotingsystem.service.FileHandlerService;
 import com.senatic.servervotingsystem.service.VotacionesService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CandidatoMapper implements GenericMapper<Candidato, CandidatoDTO> {
 
-    private final FileHandlerService fileHandlerService;
+    private final ImagenMapper imagenMapper;
     private final AprendicesService aprendicesService;
     private final VotacionesService votacionesService;
 
@@ -27,9 +26,8 @@ public class CandidatoMapper implements GenericMapper<Candidato, CandidatoDTO> {
     public Candidato dtoToPojo(CandidatoDTO dto) {
         Aprendiz aprendiz = aprendicesService.findById(dto.getDocumento()).get();
         Votacion votacion = votacionesService.getVotacionById(dto.getIdVotacion()).get();
-        Imagen imagen = Imagen.builder().id(dto.getDocumento().trim())
-                .image(fileHandlerService.dtoToPojo(dto.getImagen()))
-                .build();
+        Imagen imagen = imagenMapper.dtoToPojo(dto.getImagen());
+        imagen.setId(dto.getDocumento()); //Id is missing in imagenMapper
         Candidato candidato = Candidato.builder()
                 .aprendiz(aprendiz)
                 .imagen(imagen)
@@ -45,7 +43,7 @@ public class CandidatoMapper implements GenericMapper<Candidato, CandidatoDTO> {
 
     @Override
     public CandidatoDTO pojoToDto(Candidato pojo) {
-        MultipartFile multipartFile = fileHandlerService.pojoToDto(pojo.getImagen().getImage());
+        MultipartFile multipartFile = imagenMapper.pojoToDto(pojo.getImagen());
         CandidatoDTO candidatoDTO = CandidatoDTO.builder()
                 .documento(pojo.getAprendiz().getId())
                 .imagen(multipartFile)
