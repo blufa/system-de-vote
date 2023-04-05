@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import com.senatic.servervotingsystem.configuration.security.constant.SecurityConstants;
 import com.senatic.servervotingsystem.configuration.security.filter.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +36,9 @@ public class SecurityConfiguration {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration corsConfiguration = new CorsConfiguration();
-                        corsConfiguration.setAllowedOrigins(List.of("*:4200"));
+                        corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
                         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PATCH", "OPTIONS", "DELETE", "PUT"));
-                        corsConfiguration.setAllowedHeaders(List.of(SecurityConstants.JWT_HEADER));
+                        corsConfiguration.setAllowedHeaders(List.of("*"));
                         corsConfiguration.setAllowCredentials(true);
                         corsConfiguration.setMaxAge(3600L);
                         return corsConfiguration;
