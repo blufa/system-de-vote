@@ -44,7 +44,7 @@ public class FileHandlerServiceImpl implements FileHandlerService {
             while ((line = br.readLine()) != null) {
                 // Manipulate the line
                 String[] fields = line.split(",");
-                if (fields.length == 8) {
+                if (fields.length == 9) {
                     String ficha = fields[0].trim().isEmpty() ? "NOT_PROVIDED" : fields[0];
                     String programa = fields[1].trim().isEmpty() ? "NOT_PROVIDED" : fields[1];
                     String tipoDocumento = fields[2].trim().isEmpty() ? "NA" : fields[2];
