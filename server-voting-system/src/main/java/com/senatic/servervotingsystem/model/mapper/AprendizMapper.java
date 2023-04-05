@@ -24,7 +24,7 @@ public class AprendizMapper implements GenericMapper<Aprendiz, AprendizDTO> {
         Usuario usuario = usuarioMapper.dtoToPojo(UsuarioDTO.builder()
                 .username(dto.getNumeroDocumento())
                 .password(passwordEncoder.encode(dto.getNumeroDocumento()))
-                .authority("APRENDIZ")
+                .authority("ROLE_APRENDIZ")
                 .build());
         Aprendiz aprendiz = Aprendiz.builder()
                 .id(dto.getNumeroDocumento())
