@@ -12,10 +12,13 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.senatic.servervotingsystem.controller.exceptionHandler.ApiExceptionHandler;
+import com.senatic.servervotingsystem.controller.exceptionHandler.exception.FileNotValidException;
 import com.senatic.servervotingsystem.model.dto.AprendizDTO;
 import com.senatic.servervotingsystem.service.FileHandlerService;
 
 import jakarta.xml.bind.DatatypeConverter;
+
 
 @Service
 public class FileHandlerServiceImpl implements FileHandlerService {
@@ -40,25 +43,40 @@ public class FileHandlerServiceImpl implements FileHandlerService {
             br = new BufferedReader(new InputStreamReader(is));
             while ((line = br.readLine()) != null) {
                 // Manipulate the line
-                String[] fields = line.split(";");
+                String[] fields = line.split(",");
+                if (fields.length == 8) {
+                    String ficha = fields[0].trim().isEmpty() ? "NOT_PROVIDED" : fields[0];
+                    String programa = fields[1].trim().isEmpty() ? "NOT_PROVIDED" : fields[1];
+                    String tipoDocumento = fields[2].trim().isEmpty() ? "NA" : fields[2];
+                    String numeroDocumento = fields[3].trim().isEmpty() ? "NA" : fields[3];
+                    String nombre = fields[4].trim().isEmpty() ? "NOT_PROVIDED" : fields[4];
+                    String apellido = fields[5].trim().isEmpty() ? "NOT_PROVIDED" : fields[5];
+                    String celular = fields[6].trim().isEmpty() ? "NA" : fields[6];
+                    String correoElectronico = fields[7].trim().isEmpty() ? "NOT_PROVIDED" : fields[7];
+                    String estado = fields[8].trim().isEmpty() ? "NOT_PROVIDED" : fields[8];
+                    
+    
+                    AprendizDTO dto = AprendizDTO.builder()
+                            .ficha(ficha)
+                            .programa(programa)
+                            .tipoDocumento(tipoDocumento)
+                            .numeroDocumento(numeroDocumento)
+                            .nombre(nombre)
+                            .apellido(apellido)
+                            .celular(celular)
+                            .correoElectronico(correoElectronico)
+                            .estado(estado)
+                            .build();
+                    aprendicesDTO.add(dto);
 
-                AprendizDTO dto = AprendizDTO.builder()
-                        .ficha(fields[0])
-                        .programa(fields[1])
-                        .tipoDocumento(fields[2])
-                        .numeroDocumento(fields[3])
-                        .nombre(fields[4])
-                        .apellido(fields[5])
-                        .celular(fields[6])
-                        .correoElectronico(fields[7])
-                        .estado(fields[8])
+                } else {
+                    throw new FileNotValidException("CSV column length is not valid. Required: 8. Having: " + fields.length);
+                }
 
-                        .build();
-                aprendicesDTO.add(dto);
             }
 
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            ApiExceptionHandler.logger.error(e.getMessage());
         }
         return aprendicesDTO;
     }
@@ -69,7 +87,7 @@ public class FileHandlerServiceImpl implements FileHandlerService {
         try {
             base64 = Base64.getEncoder().encodeToString(dto.getBytes());
         } catch ( IOException e) {
-            e.printStackTrace();
+            ApiExceptionHandler.logger.error(e.getMessage());
         }
         return base64;
     }
