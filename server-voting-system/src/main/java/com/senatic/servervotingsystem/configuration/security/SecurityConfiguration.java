@@ -32,19 +32,19 @@ public class SecurityConfiguration {
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // .cors().configurationSource(new CorsConfigurationSource() {
+                .cors().configurationSource(new CorsConfigurationSource() {
 
-                //     @Override
-                //     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                //         CorsConfiguration corsConfiguration = new CorsConfiguration();
-                //         corsConfiguration.setAllowedOrigins(List.of("*"));
-                //         corsConfiguration.setAllowedMethods(List.of("*"));
-                //         corsConfiguration.setAllowedHeaders(List.of(SecurityConstants.JWT_HEADER));
-                //         corsConfiguration.setAllowCredentials(true);
-                //         corsConfiguration.setMaxAge(3600L);
-                //         return corsConfiguration;
-                //     }})
-                .cors().disable()
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                        CorsConfiguration corsConfiguration = new CorsConfiguration();
+                        corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
+                        corsConfiguration.setAllowedMethods(List.of("*"));
+                        corsConfiguration.setAllowedHeaders(List.of(SecurityConstants.JWT_HEADER));
+                        corsConfiguration.setAllowCredentials(true);
+                        corsConfiguration.setMaxAge(3600L);
+                        return corsConfiguration;
+                    }})
+                .and()
                 .csrf().disable()
                 .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
                 .authorizeHttpRequests()
