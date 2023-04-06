@@ -29,13 +29,13 @@ public class Voto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne(cascade=CascadeType.REMOVE)
     @JoinColumn(name="idCandidato")
     private Candidato candidato;
-    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne(cascade= CascadeType.REMOVE)
     @JoinColumn(name="idAprendiz")
     private Aprendiz aprendiz;
-    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne(cascade= CascadeType.REMOVE)
     @JoinColumn(name="idVotacion")
     private Votacion votacion;
     @CreationTimestamp
