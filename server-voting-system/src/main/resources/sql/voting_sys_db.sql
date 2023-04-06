@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 05-04-2023 a las 15:03:54
+-- Tiempo de generación: 06-04-2023 a las 13:49:22
 -- Versión del servidor: 8.0.32-0ubuntu0.22.04.2
 -- Versión de PHP: 8.1.2-1ubuntu2.11
 
@@ -54,8 +54,8 @@ CREATE TABLE `candidatos` (
   `estado` varchar(255) DEFAULT NULL,
   `lastModified` datetime(6) DEFAULT NULL,
   `propuestas` varchar(250) DEFAULT NULL,
-  `idAprendiz` varchar(10) DEFAULT NULL,
-  `idImagen` varchar(10) DEFAULT NULL,
+  `idAprendiz` varchar(25) DEFAULT NULL,
+  `idImagen` varchar(25) DEFAULT NULL,
   `idVotacion` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -88,15 +88,6 @@ CREATE TABLE `Token` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Volcado de datos para la tabla `Token`
---
-
--- INSERT INTO `Token` (`id`, `expired`, `revoked`, `token`, `tokenType`, `idUsuario`) VALUES
--- (1, b'0', b'0', 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTM240QWNNaW4wIiwiaWF0IjoxNjgwNzIwMzY5LCJleHAiOjE2ODA3MjE4MDl9.uwf3NjM4mQ_-XkgEwcwVxrrHMQzJwxGS_qLQQAnMFx0', 'BEARER', 1);
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `usuarios`
 --
 
@@ -112,15 +103,6 @@ CREATE TABLE `usuarios` (
   `password` varchar(250) DEFAULT NULL,
   `username` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Volcado de datos para la tabla `usuarios`
---
-
--- INSERT INTO `usuarios` (`id`, `accountNonExpired`, `accountNonLocked`, `authority`, `creationDateTime`, `credentialsNonExpired`, `enabled`, `lastModified`, `password`, `username`) VALUES
--- (1, b'1', b'1', 'ROLE_ADMINISTRADOR', '2023-04-05 13:46:09.057086', b'1', b'1', '2023-04-05 13:46:09.057697', '$2a$10$yI4cYkQMjzAq48lgjkNZKuk0cT24JmVW9O/avV3cA8MzIgR0Hy73G', 'S3n4AcMin0');
-
--- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `votaciones`
@@ -146,7 +128,7 @@ CREATE TABLE `votos` (
   `id` int NOT NULL,
   `fechaRegistro` datetime(6) DEFAULT NULL,
   `valido` bit(1) DEFAULT NULL,
-  `idAprendiz` varchar(10) DEFAULT NULL,
+  `idAprendiz` varchar(25) DEFAULT NULL,
   `idCandidato` int DEFAULT NULL,
   `idVotacion` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
