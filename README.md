@@ -1,7 +1,7 @@
 # server-voting-system
 Server app for SENA-TIC headquarters voting system
 
-## Los aspectos técnicas a tener en cuenta:
+## Los aspectos técnicos a tener en cuenta:
 
 1. Java versión 17 es requerido.
 2. La aplicación utiliza Spring Boot versión 3.0.5 como base.
