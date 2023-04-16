@@ -33,16 +33,22 @@ import com.senatic.servervotingsystem.model.mapper.VotacionMapper;
 
 import lombok.RequiredArgsConstructor;
 
-@RestController
-@RequestMapping("api/v1/votaciones")
-@RequiredArgsConstructor
 @Validated
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("api/v1/votaciones")
 public class VotacionesController {
 
     private final VotacionesService votacionesService;
     private final EstadisticasService estadisticasService;
     private final VotacionMapper votacionMapper;
 
+    /**
+    Obtiene una lista paginada de todas las votaciones.
+    @param page El número de página (predeterminado 0).
+    @param size El tamaño de página (predeterminado 6).
+    @return La respuesta HTTP con la lista paginada de votaciones.
+    */
     @GetMapping
     public ResponseEntity<Page<VotacionDTO>> handleGetVotaciones(
             @RequestParam(defaultValue = "0") Integer page,
@@ -58,6 +64,14 @@ public class VotacionesController {
         return ResponseEntity.status(HttpStatus.OK).body(votacionesDTO);
     }
 
+    /**
+    Obtiene una lista paginada de votaciones que coinciden con un ejemplo de votación proporcionado.
+    @param exampleDTO El ejemplo de votación a buscar.
+    @param page El número de página (predeterminado 0).
+    @param size El tamaño de página (predeterminado 6).
+    @return La respuesta HTTP con la lista paginada de votaciones que coinciden con el ejemplo proporcionado.
+    @throws NullPointerException Si exampleDTO es nulo.
+    */
     @GetMapping("/search")
     public ResponseEntity<Page<VotacionDTO>> handleSearchVotacion(
             @RequestBody VotacionDTO exampleDTO,
@@ -75,6 +89,13 @@ public class VotacionesController {
         return ResponseEntity.status(HttpStatus.OK).body(votacionesDTO);
     }
 
+    /**
+    Actualiza la votación actual estableciendo una nueva votación como actual.
+    @param id El identificador de la votación a establecer como actual.
+    @return La respuesta HTTP con la votación actualizada.
+    @throws EntityNotFoundException Si no se encuentra la votación con el identificador proporcionado.
+    @throws IllegalStateException Si la votación no está habilitada para ser establecida como actual.
+    */
     @PutMapping("current/{id}")
     public ResponseEntity<VotacionDTO> handleSetCurrentVotacion(@PathVariable Integer id)
             throws EntityNotFoundException {
@@ -89,6 +110,13 @@ public class VotacionesController {
         return ResponseEntity.status(HttpStatus.OK).body(votacionDTO);
     }
 
+    /**
+    Actualiza una votación existente con la información proporcionada en el objeto VotacionDTO.
+    @param votacionDTO El objeto VotacionDTO con la información de la votación a actualizar.
+    @return La respuesta HTTP con el estado de la operación.
+    @throws EntityNotFoundException Si no se encuentra una votación existente con la información proporcionada.
+    @throws NullPointerException Si votacionDTO es nulo.
+    */
     @PutMapping
     public ResponseEntity<HttpStatus> handleUpdateVotacion(@RequestBody VotacionDTO votacionDTO)
             throws EntityNotFoundException {
@@ -100,6 +128,12 @@ public class VotacionesController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+    Borra una votación con el id proporcionado.
+    @param idVotacion El id de la votación a borrar.
+    @return La respuesta HTTP con el código de estado 200 (OK) si la votación se borra correctamente.
+    @throws EntityNotFoundException Si no se encuentra la votación con el id proporcionado.
+    */
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> handleDeleteVotacion(@PathVariable("id") Integer idVotacion)
             throws EntityNotFoundException {
@@ -110,6 +144,12 @@ public class VotacionesController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+    Crea una nueva votación.
+    @param votacionDTO Los datos de la votación a crear.
+    @return La respuesta HTTP con el estado 201 CREATED si la votación fue creada exitosamente.
+    @throws EntityAlreadyOnStateException Si ya existe una votación con el mismo identificador.
+    */
     @PostMapping
     public ResponseEntity<HttpStatus> handleSaveVotacion(@RequestBody VotacionDTO votacionDTO)
             throws EntityAlreadyOnStateException {
@@ -121,6 +161,13 @@ public class VotacionesController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /**
+    Deshabilita una votación dado su identificador de votación.
+    @param idVotacion El identificador de la votación a deshabilitar.
+    @return La respuesta HTTP con el código de estado 200 (OK) si la votación se deshabilita correctamente.
+    @throws EntityNotFoundException Si no se encuentra la votación con el identificador proporcionado.
+    @throws EntityAlreadyOnStateException Si la votación ya está deshabilitada.
+    */
     @PatchMapping("/disable/{id}")
     public ResponseEntity<HttpStatus> handleDisableVotacion(@PathVariable("id") Integer idVotacion)
             throws EntityNotFoundException, EntityAlreadyOnStateException {
@@ -133,6 +180,13 @@ public class VotacionesController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+    Habilita una votación existente a través de su ID.
+    @param idVotacion El ID de la votación a habilitar.
+    @return La respuesta HTTP con el estado OK si la votación ha sido habilitada con éxito.
+    @throws EntityNotFoundException si la votación no existe.
+    @throws EntityAlreadyOnStateException si la votación ya está habilitada.
+    */
     @PatchMapping("/enable/{id}")
     public ResponseEntity<HttpStatus> handleEnableVotacion(@PathVariable("id") Integer idVotacion)
             throws EntityNotFoundException, EntityAlreadyOnStateException {
@@ -145,6 +199,13 @@ public class VotacionesController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+    Obtiene las estadísticas de una votación específica.
+    @param idVotacion El identificador de la votación.
+    @return La respuesta HTTP con las estadísticas de la votación proporcionada.
+    @throws EntityNotFoundException si no se encuentra la votación.
+    @throws IllegalStateException si la votación no está desactivada.
+    */
     @GetMapping("/estadisticas/{id}")
     public ResponseEntity<Estadisticas> handleGetEstadisticas(@PathVariable("id") Integer idVotacion)
             throws EntityNotFoundException, IllegalStateException {

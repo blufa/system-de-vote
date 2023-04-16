@@ -26,12 +26,24 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final LogoutHandler logoutHandler;
 
+    /**
+    Configura el filtro de seguridad que maneja el proceso de autenticación y autorización.
+    @param http La configuración de seguridad HTTP.
+    @return La cadena de filtros de seguridad.
+    @throws Exception Si hay un error en la configuración.
+    */
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .cors().configurationSource(new CorsConfigurationSource() {
+                    /**
+                    Devuelve una configuración CORS personalizada que permite peticiones desde http://localhost:4200
+                    con cualquier método, encabezado y credenciales, con una edad máxima de caché de 3600 segundos.
+                    @param request El objeto HttpServletRequest.
+                    @return La configuración CORS personalizada.
+                    */
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration corsConfiguration = new CorsConfiguration();

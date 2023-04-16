@@ -39,16 +39,22 @@ import com.senatic.servervotingsystem.service.VotacionesService;
 
 import lombok.RequiredArgsConstructor;
 
-@RestController
-@RequestMapping("api/v1/candidatos")
-@RequiredArgsConstructor
 @Validated
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("api/v1/candidatos")
 public class CandidatosController {
 
     private final CandidatosService candidatosService;
     private final VotacionesService votacionesService;
     private final CandidatoMapper candidatoMapper;
 
+    /**
+    Maneja solicitudes GET para obtener una página de candidatos en formato DTO.
+    @param page El número de página a obtener. Por defecto, es 0.
+    @param size El número de elementos por página. Por defecto, es 9.
+    @return Un objeto ResponseEntity que contiene una página de candidatos en formato DTO y un estado HTTP que indica si la operación fue exitosa o no.
+    */
     @GetMapping
     public ResponseEntity<Page<CandidatoDTO>> handleGetCandidatos(
             @RequestParam(defaultValue = "0") Integer page,
@@ -64,6 +70,12 @@ public class CandidatosController {
         return ResponseEntity.status(HttpStatus.OK).body(candidatosDTO);
     }
 
+    /**
+    Obtiene una lista de los candidatos habilitados en la votación actual, si existe.
+    @return Un objeto ResponseEntity con un cuerpo que contiene la lista de candidatos habilitados en la votación actual y un código de estado HTTP que indica el resultado de la operación.
+    Si no existe una votación actual, el código de estado será NOT_FOUND.
+    Si no hay candidatos habilitados en la votación actual, el código de estado será NOT_FOUND.
+    */
     @GetMapping("/current-votacion")
     public ResponseEntity<List<CandidatoDTO>> handleGetCandidatoByCurrentVotacion() {
 
@@ -82,6 +94,14 @@ public class CandidatosController {
                 .body(candidatosDTO);
     }
 
+    /**
+    Busca candidatos que coincidan con los criterios especificados en el objeto CandidatoDTO proporcionado.
+    @param candidatoDTO El objeto CandidatoDTO con los criterios de búsqueda.
+    @param page El número de página que se desea obtener (por defecto, 0).
+    @param size El tamaño de la página que se desea obtener (por defecto, 9).
+    @return Un objeto ResponseEntity con un cuerpo que contiene una página de candidatos que coinciden con los criterios de búsqueda y un código de estado HTTP que indica el resultado de la operación.
+    @throws EntityNotFoundException Si no se encontró ningún candidato que coincida con los criterios de búsqueda.
+    */
     @GetMapping("/search")
     public ResponseEntity<Page<CandidatoDTO>> handleSearchCandidato(
             @RequestBody CandidatoDTO candidatoDTO,
@@ -98,6 +118,12 @@ public class CandidatosController {
         return ResponseEntity.status(HttpStatus.OK).body(candidatosDTO);
     }
 
+    /**
+    Crea un nuevo candidato a partir de un objeto CandidatoDTO.
+    @param candidatoDTO El objeto CandidatoDTO que contiene la información del candidato a crear.
+    @return Un objeto ResponseEntity con un código de estado HTTP que indica el resultado de la operación.
+    @throws EntityAlreadyOnStateException Si ya existe un candidato con el mismo ID en la votación actual.
+    */
     @PostMapping
     public ResponseEntity<HttpStatus> handleCreateCandidato(@RequestBody CandidatoDTO candidatoDTO)
             throws EntityAlreadyOnStateException {
@@ -109,6 +135,12 @@ public class CandidatosController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /**
+    Elimina el candidato especificado por su ID.
+    @param id El ID del candidato a eliminar.
+    @return Un objeto ResponseEntity con un código de estado HTTP que indica el resultado de la operación.
+    @throws EntityNotFoundException Si el candidato especificado no existe.
+    */
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> handleDeleteCandidatoById(
             @PathVariable Integer id) throws EntityNotFoundException {
@@ -119,6 +151,12 @@ public class CandidatosController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+    Actualiza un candidato existente con la información proporcionada.
+    @param candidatoDTO La información actualizada del candidato.
+    @return Un objeto ResponseEntity con un código de estado HTTP que indica el resultado de la operación.
+    @throws EntityNotFoundException Si no se encuentra un candidato con el ID proporcionado en la base de datos.
+    */
     @PutMapping
     public ResponseEntity<HttpStatus> handleUpdateCandidato(
             @RequestBody CandidatoDTO candidatoDTO) throws EntityNotFoundException {
@@ -130,6 +168,13 @@ public class CandidatosController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+    Habilita un candidato especificado por su ID.
+    @param idCandidato El ID del candidato que se desea habilitar.
+    @return Un objeto ResponseEntity con un código de estado HTTP que indica el resultado de la operación.
+    @throws EntityNotFoundException Si el candidato especificado no existe.
+    @throws EntityAlreadyOnStateException Si el candidato especificado ya se encuentra habilitado.
+    */
     @PatchMapping("/enable/{id}")
     public ResponseEntity<HttpStatus> enableCandidatoById(@PathVariable("id") Integer idCandidato)
             throws EntityNotFoundException, EntityAlreadyOnStateException {
@@ -142,6 +187,13 @@ public class CandidatosController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+    Deshabilita un candidato especificado por su ID.
+    @param idCandidato El ID del candidato que se desea deshabilitar.
+    @return Un objeto ResponseEntity con un código de estado HTTP que indica el resultado de la operación.
+    @throws EntityNotFoundException Si el candidato especificado no existe.
+    @throws EntityAlreadyOnStateException Si el candidato especificado ya se encuentra deshabilitado.
+    */
     @PatchMapping("/disable/{id}")
     public ResponseEntity<HttpStatus> disableCandidatoById(@PathVariable("id") Integer idCandidato)
             throws EntityNotFoundException, EntityAlreadyOnStateException {
@@ -154,7 +206,6 @@ public class CandidatosController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    // Convierte en null los string vacíos
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));

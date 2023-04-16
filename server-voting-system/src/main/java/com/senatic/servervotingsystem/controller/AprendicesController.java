@@ -35,16 +35,22 @@ import com.senatic.servervotingsystem.service.FileHandlerService;
 
 import lombok.RequiredArgsConstructor;
 
-@RestController
-@RequestMapping("api/v1/aprendices")
-@RequiredArgsConstructor
 @Validated
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("api/v1/aprendices")
 public class AprendicesController {
 
     private final AprendicesService aprendicesService;
     private final AprendizMapper aprendizMapper;
     private final FileHandlerService fileHandlerService;
 
+    /**
+    Obtiene una lista paginada de todos los aprendices.
+    @param page El número de página (predeterminado 0).
+    @param size El tamaño de página (predeterminado 9).
+    @return La respuesta HTTP con la lista paginada de aprendices.
+    */
     @GetMapping
     public ResponseEntity<Page<AprendizDTO>> handleGetAprendices(
             @RequestParam(defaultValue = "0") Integer page,
@@ -58,6 +64,13 @@ public class AprendicesController {
         return ResponseEntity.status(HttpStatus.OK).body(aprendicesDTO);
     }
 
+    /**
+    Realiza una búsqueda de aprendices basada en un ejemplo proporcionado, devolviendo una lista paginada de resultados.
+    @param exampleDTO El ejemplo de AprendizDTO a buscar.
+    @param page El número de página a recuperar (predeterminado 0).
+    @param size El tamaño de página a recuperar (predeterminado 9).
+    @return La respuesta HTTP con la lista paginada de aprendices encontrados.
+    */
     @GetMapping("/search")
     public ResponseEntity<Page<AprendizDTO>> handleSearchByExample(
             @RequestBody AprendizDTO exampleDTO,
@@ -73,6 +86,12 @@ public class AprendicesController {
         return ResponseEntity.status(HttpStatus.OK).body(aprendicesDTO);
     }
 
+    /**
+    Crea un nuevo aprendiz.
+    @param aprendizDTO La información del aprendiz a crear.
+    @return La respuesta HTTP con el estado de la creación del aprendiz.
+    @throws EntityAlreadyExistException Si el aprendiz ya existe en la base de datos.
+    */
     @PostMapping
     public ResponseEntity<HttpStatus> handleCreateAprendiz(@RequestBody AprendizDTO aprendizDTO)
             throws EntityAlreadyExistException {
@@ -84,6 +103,12 @@ public class AprendicesController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /**
+    Guarda un grupo de aprendices a partir de un archivo CSV.
+    @param csvFile El archivo CSV que contiene los aprendices a guardar.
+    @return La respuesta HTTP indicando si la operación fue exitosa o no.
+    @throws FileNotValidException Si el archivo no es válido.
+    */
     @PostMapping("/csv")
     public ResponseEntity<HttpStatus> handleSaveAprendicesByCSV(@RequestBody MultipartFile csvFile)
             throws FileNotValidException {
@@ -99,6 +124,12 @@ public class AprendicesController {
         throw new FileNotValidException("File must not be empty. Can not be readed");
     }
 
+    /**
+    Elimina un aprendiz por su ID.
+    @param id El ID del aprendiz a eliminar.
+    @return La respuesta HTTP indicando si se realizó o no la eliminación.
+    @throws EntityNotFoundException Si el aprendiz con el ID proporcionado no existe.
+    */
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> handleDeleteAprendizById(@PathVariable String id)
             throws EntityNotFoundException {
@@ -109,6 +140,12 @@ public class AprendicesController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+    Actualiza un aprendiz existente.
+    @param aprendizDTO El aprendiz con la información actualizada.
+    @return La respuesta HTTP con el estado de la actualización.
+    @throws EntityNotFoundException si el aprendiz no existe.
+    */
     @PutMapping
     public ResponseEntity<HttpStatus> handleEditAprendiz(@RequestBody AprendizDTO aprendizDTO)
             throws EntityNotFoundException {

@@ -17,6 +17,14 @@ public class LogoutService implements LogoutHandler {
 
     private final TokenRepository tokenRepository;
 
+    /**
+    Invalida el token de autenticación del usuario al cerrar sesión.
+    Si el token está presente en la base de datos, se marca como revocado y caducado.
+    @param request El objeto HttpServletRequest que contiene la solicitud HTTP.
+    @param response El objeto HttpServletResponse que contiene la respuesta HTTP.
+    @param authentication El objeto Authentication que representa la autenticación actual.
+    Si no se proporciona una autenticación, no se hace nada.
+    */
     @Override
     public void logout(
             HttpServletRequest request,

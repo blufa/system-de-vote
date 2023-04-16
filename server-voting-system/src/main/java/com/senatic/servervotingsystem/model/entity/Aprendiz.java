@@ -69,4 +69,5 @@ public class Aprendiz {
 
     @UpdateTimestamp
     private LocalDateTime lastModified;
+    
 }

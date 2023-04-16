@@ -29,7 +29,6 @@ public class bootstrapLoader implements CommandLineRunner {
 
     void loadAdminUsers(){
         Usuario admin = Usuario.builder()
-
                 .username("S3n4AcMin0")
                 .password(passwordEncoder.encode("S3n4AcMin0"))
                 .authority(AuthorityEnum.ROLE_ADMINISTRADOR)
