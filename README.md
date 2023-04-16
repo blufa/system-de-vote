@@ -11,21 +11,21 @@ Server app for SENA-TIC headquarters voting system
 
 ## Requisitos
 
-    Antes de poner en funcionamiento el proyecto, asegúrese de tener lo siguiente:
+Antes de poner en funcionamiento el proyecto, asegúrese de tener lo siguiente:
 
-        Java 17 instalado en su sistema
-        Una instancia de MySQL en funcionamiento
-        Un editor de código como IntelliJ IDEA o Eclipse
+1. Java 17 instalado en su sistema
+2. Una instancia de MySQL en funcionamiento
+3. Un editor de código como IntelliJ IDEA o Eclipse
 
 ## Paso 1: Clonar el repositorio
 
-    Comience por clonar el repositorio de GitHub en su máquina local. Puede hacerlo ejecutando el siguiente comando en su terminal:
+Comience por clonar el repositorio de GitHub en su máquina local. Puede hacerlo ejecutando el siguiente comando en su terminal:
 
-        ->git clone https://github.com/usuario-github/server-voting-system.git
+    git clone https://github.com/usuario-github/server-voting-system.git
 
 ## Paso 2: Configurar la base de datos
 
-    Asegúrese de tener una instancia de MySQL en funcionamiento y cree una base de datos para el proyecto con el archivo DDL contenido en src/main/resources/sql. Luego, abra el archivo application.properties en la carpeta src/main/resources/ y configure la conexión a la base de datos de la siguiente manera:
+Asegúrese de tener una instancia de MySQL en funcionamiento y cree una base de datos para el proyecto con el archivo DDL contenido en src/main/resources/sql. Luego, abra el archivo application.properties en la carpeta src/main/resources/ y configure la conexión a la base de datos de la siguiente manera:
 
         spring.datasource.url=jdbc:mysql://localhost:3306/voting_sys_db
         spring.datasource.username=nombre-usuario
@@ -34,8 +34,8 @@ Server app for SENA-TIC headquarters voting system
 
 ## Paso 3: Ejecutar el proyecto
 
-    Abra su editor de código y abra el proyecto clonado. Una vez que se haya cargado el proyecto, puede ejecutarlo haciendo clic derecho en la clase Application.java en la carpeta src/main/java y seleccionando la opción "Run".
+Abra su editor de código y abra el proyecto clonado. Una vez que se haya cargado el proyecto, puede ejecutarlo haciendo clic derecho en la clase Application.java en la carpeta src/main/java y seleccionando la opción "Run".
 
 ## Conclusión
 
-    Siguiendo estos pasos, debería poder poner en funcionamiento el proyecto en su máquina local y comenzar a trabajar en él. Si tiene algún problema, asegúrese de verificar la documentación del proyecto.
+Siguiendo estos pasos, debería poder poner en funcionamiento el proyecto en su máquina local y comenzar a trabajar en él. Si tiene algún problema, asegúrese de verificar la documentación del proyecto.
