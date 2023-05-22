@@ -25,7 +25,7 @@ This project is used by the following companies:
 To run the project locally, you must follow the next steps carefully:
 - Clone the project
 - Unzip it
-- Go to the docker-compose directory dev envirorment
+- Go to the docker-compose directory dev environment
 With the following commands:
 
 ```bash
@@ -51,7 +51,7 @@ Using the following command or with help of your preffered IDE
 
 ## Deployment
 
-This project deployment depends on enviorment variables that are secret. To use it,
+This project deployment depends on environment variables that are secret. To use it,
 get in contact with fabricatic via email fabricatic@gmail.com
 
 ## Support
