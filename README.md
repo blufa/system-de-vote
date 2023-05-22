@@ -1,41 +1,67 @@
-# server-voting-system
-Server app for SENA-TIC headquarters voting system
 
-## Los aspectos técnicos a tener en cuenta:
+# Server voting system
 
-1. Java versión 17 es requerido.
-2. La aplicación utiliza Spring Boot versión 3.0.5 como base.
-3. El manejo de la capa de persistencia con spring-jpa y MySQL.
-4. La seguridad es manejada mediante spring-Security y una implementación de autenticactión y autorización mediante JWT.
-5. Está desarrollado como un servicio web RESTful.
+Server application with microservices architecture for the voting system of the SENA headquarters 
 
-## Requisitos
+## Used By
 
-Antes de poner en funcionamiento el proyecto, asegúrese de tener lo siguiente:
+This project is used by the following companies:
 
-1. Java 17 instalado en su sistema
-2. Una instancia de MySQL en funcionamiento
-3. Un editor de código como IntelliJ IDEA o Eclipse
+- SENA German-Colombian center
 
-## Paso 1: Clonar el repositorio
 
-Comience por clonar el repositorio de GitHub en su máquina local. Puede hacerlo ejecutando el siguiente comando en su terminal:
+## Tech Stack - Server
 
-    git clone https://github.com/usuario-github/server-voting-system.git
+**Server:** Java, Springboot
 
-## Paso 2: Configurar la base de datos
+**Security:** Spring-security OAuth2
 
-Asegúrese de tener una instancia de MySQL en funcionamiento y cree una base de datos para el proyecto con el archivo DDL contenido en src/main/resources/sql. Luego, abra el archivo application.properties en la carpeta src/main/resources/ y configure la conexión a la base de datos de la siguiente manera:
+**BBDD:** H2, MySQL
 
-        spring.datasource.url=jdbc:mysql://localhost:3306/voting_sys_db
-        spring.datasource.username=nombre-usuario
-        spring.datasource.password=contraseña-usuario
-        spring.jpa.hibernate.ddl-auto=none
+**Tools:** Docker, Kubernetes, Helm, Postman
 
-## Paso 3: Ejecutar el proyecto
+## Run Locally
 
-Abra su editor de código y abra el proyecto clonado. Una vez que se haya cargado el proyecto, puede ejecutarlo haciendo clic derecho en la clase Application.java en la carpeta src/main/java y seleccionando la opción "Run".
+To run the project locally, you must follow the next steps carefully:
+- Clone the project
+- Unzip it
+- Go to the docker-compose directory dev envirorment
+With the following commands:
 
-## Conclusión
+```bash
+  git clone https://github.com/edev404/server-voting-system.git
+  unzip server-voting-system.zip
+  cd server-voting-system/docker-compose/dev
 
-Siguiendo estos pasos, debería poder poner en funcionamiento el proyecto en su máquina local y comenzar a trabajar en él. Si tiene algún problema, asegúrese de verificar la documentación del proyecto.
+```
+Execute the docker-compose.yml with Docker:
+
+```bash
+  sudo docker compose up
+```
+If you want to run the project without Docker, must get into each project and execute them in this order:
+
+configserver → eurekaserver → votingserver → gatewayserver
+
+Using the following command or with help of your preffered IDE
+
+```bash
+  mvn spring-boot:run
+```
+
+## Deployment
+
+This project deployment depends on enviorment variables that are secret. To use it,
+get in contact with fabricatic via email fabricatic@gmail.com
+
+## Support
+
+For support, email fabricatic@gmail.com
+
+## Authors
+This project was materialized by ADSO apprentices associated with the development unit of the SENA German-Colombian center called: "FabricaTic".
+
+- [@edev404](https://www.github.com/edev404)
+- [@cristianPorrety](https://www.github.com/cristianPorrety)
+
+
