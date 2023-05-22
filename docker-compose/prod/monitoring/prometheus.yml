@@ -1,0 +1,8 @@
+global:
+  scrape_interval:     5s # Set the scrape interval to every 5 seconds.
+  evaluation_interval: 5s # Evaluate rules every 5 seconds.
+scrape_configs:
+  - job_name: 'votingserver'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+    - targets: ['votingserver:8090', 'votingserver:8091', 'votingserver:8092']
