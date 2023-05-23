@@ -1,0 +1,20 @@
+
+deploymentName: configserver-deployment
+deploymentLabel: configserver
+
+replicaCount: 1
+
+image:
+  repository: fabricatic/configserver
+  tag: latest
+
+containerPort: 8071
+
+service:
+  type: LoadBalancer
+  port: 8071
+  targetPort: 8071
+
+config_enabled: true
+profile_enabled: true
+eureka_enabled: true

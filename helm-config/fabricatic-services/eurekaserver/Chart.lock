@@ -1,0 +1,6 @@
+dependencies:
+- name: fabricatic-common
+  repository: file://../../fabricatic-common
+  version: 0.1.0
+digest: sha256:446649e1e1c52bec3689c0ebb681c50d7d703e76cfdf4908f01ed4fa3b1c11d8
+generated: "2023-05-22T21:50:28.425320166-05:00"
