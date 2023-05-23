@@ -2,6 +2,18 @@ version: "3.8"
 
 services:
 
+  # keycloak:
+  #   image: jboss/keycloak:latest
+  #   ports:
+  #     - 8070:8080
+  #   networks:
+  #    - backend
+  #   environment:
+  #     - KEYCLOAK_USER=admin
+  #     - KEYCLOAK_PASSWORD=admin
+  #   volumes:
+  #     - ./data:/opt/jboss/keycloak/standalone/data
+
   grafana:
     image: "grafana/grafana:latest"
     ports:
