@@ -1,0 +1,18 @@
+dependencies:
+- name: fabricatic-common
+  repository: file://../../fabricatic-common
+  version: 0.1.0
+- name: configserver
+  repository: file://../../fabricatic-services/configserver
+  version: 0.1.0
+- name: eurekaserver
+  repository: file://../../fabricatic-services/eurekaserver
+  version: 0.1.0
+- name: votingserver
+  repository: file://../../fabricatic-services/votingserver
+  version: 0.1.0
+- name: gatewayserver
+  repository: file://../../fabricatic-services/gatewayserver
+  version: 0.1.0
+digest: sha256:c9ebc6e0e8c29d3259f94826c94de497e71be1b4d460fa9f8947f80fd4984ddd
+generated: "2023-05-23T07:49:38.659449592-05:00"
