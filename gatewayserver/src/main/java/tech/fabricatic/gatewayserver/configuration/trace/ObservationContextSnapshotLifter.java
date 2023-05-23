@@ -13,6 +13,7 @@ import reactor.core.CoreSubscriber;
 import reactor.core.Scannable;
 import reactor.util.context.Context;
 
+@SuppressWarnings("null")
 public class ObservationContextSnapshotLifter<T> implements CoreSubscriber<T> {
 
     public static <T> BiFunction<Scannable, CoreSubscriber<? super T>, CoreSubscriber<? super T>> lifter() {
