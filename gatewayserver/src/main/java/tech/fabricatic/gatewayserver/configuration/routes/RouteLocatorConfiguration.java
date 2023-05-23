@@ -1,4 +1,4 @@
-package tech.fabricatic.gatewayserver.configuration;
+package tech.fabricatic.gatewayserver.configuration.routes;
 
 import java.util.Date;
 
