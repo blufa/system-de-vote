@@ -31,7 +31,7 @@ services:
     networks:
      - backend
     environment:
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: prod
    
   eurekaserver:
     image: fabricatic/eurekaserver:latest
@@ -49,7 +49,7 @@ services:
         max_attempts: 3
         window: 120s
     environment:
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
       
   votingserver:
@@ -69,7 +69,7 @@ services:
         max_attempts: 3
         window: 120s
     environment:
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
   
@@ -91,7 +91,7 @@ services:
         max_attempts: 3
         window: 180s
     environment:
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
     
